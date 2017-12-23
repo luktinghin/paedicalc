@@ -1,0 +1,406 @@
+
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+@font-face {
+   font-family: SourceSans;
+   src: url(SourceSansPro-Regular.otf);
+}
+
+@font-face {
+   font-family: SourceSans;
+   src: url(SourceSansPro-Bold.otf);
+   font-weight: bold;
+}
+
+@font-face {
+   font-family: SourceSans;
+   src: url(SourceSansPro-It.otf);
+   font-style: italic;
+}
+
+@font-face {
+   font-family: SourceSans;
+   src: url(SourceSansPro-BoldIt.otf);
+   font-weight: bold;
+   font-style: italic;
+}
+
+body {font-family: "SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif-condensed, sans-serif; font-size: 10.5pt; margin: 0px;}
+
+h2 {font-family: "SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif; color: blue; font-size: 140%; line-height: 20px; margin: 10px 10px 0px 10px; padding-bottom: 4px; 
+text-align:center;}
+
+.bodycontent { padding:5px 4px 5px 4px; }
+.contentrow { padding-bottom: 5px;}
+#resuslayer { display:none; }
+#vitalslayer { display:none; }
+
+.entrybox {
+  background-image: url("pwh.gif");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: contain;
+  background-color:#eee; 
+  padding: 5px 0px 10px 10px; 
+  border-radius:10px;
+}
+ 
+.column {
+  width:100%;
+  display:block;
+  padding: 0px 0px 0px 0px;
+  box-sizing: border-box;
+}
+
+.tableheading {
+  font-family: "SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif; 
+  margin: 14px 0px 6px 0px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 25px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #bbb;
+}
+
+.notcondensed {font-family: "SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif; }
+
+table {
+border-collapse:collapse;
+}
+
+.nomobile { display:none; }
+
+/*#vasotable td { padding: 4px 0px 4px 1px; }
+#otherdrugstable td { padding: 3px 0px 3px 2px; }*/
+
+tr {border-left: 0; border-right: 0; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;}
+tr:first-child {border-top: 0;}
+tr:last-child {border-bottom: 0; }
+td { padding: 4px 0px 4px 2px; }
+td.subheading { font-weight:bold; font-style:italic; }
+tr.noborderb { border-bottom:0; }
+tr.noborderb td {padding-bottom:0px;}
+tr.noborderu { border-top:0; font-size:80%; font-style:italic; }
+tr.noborderu td {padding-top:0px;}
+/*tr:hover {background-color: #eeeeee; }*/
+
+
+#table1,
+#table1 tr,
+#table1 td { border: 0;}
+#table1 td { padding: 2px 0px 2px 0px; }
+#table1 tr:hover {background-color: transparent; }
+
+#about a:link,
+#about a:visited,
+#about a:active {color:#442222; text-decoration:none; font-weight:bold;}
+#about a:hover {background:#eee;}
+
+button.showhidebutton {
+  background-color:#666;
+  font-family:"SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif-condensed, sans-serif;
+  font-size:80%;
+  font-weight: bold;
+  color:#fff; border-radius:5px; border:1px solid grey; padding: 2px; line-height:14px; 
+  margin-top:2px;
+  float: right;}
+  
+button.showhidebutton:hover {outline:0; background-color:#ccc; border:1px solid black; cursor:pointer;}
+button.showhidebutton:active, focus {outline:0; background-color:#333;}
+
+button.endbutton {
+  font-family:"SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif-condensed, sans-serif;
+  height: 26px;
+  background-color:#ddd;
+  margin: 2px 0px 2px 0px; padding: 1px 4px 1px 4px;
+  outline: none;
+  border: 1px solid #aaa;
+}
+button.endbutton:hover {
+  background-color:#eee;
+  border: 1px solid rgba(81, 203, 238, 1);
+  box-shadow: 0 0 4px rgba(81, 203, 238, 1);}
+
+button.endbutton:active, focus {
+  background-color:#666;
+  border: 1px solid #000;
+  box-shadow: none;
+}
+
+select {
+  font-family:"SourceSans", "Calibri", "Trebuchet MS", "Lucida Sans", sans-serif-condensed, sans-serif;
+  height: 26px;
+  margin: 2px 0px 2px 0px; padding:0px;
+  outline: none;
+  border:1px solid #aaa;
+}
+select:focus {
+  border: 1px solid rgba(81, 203, 238, 1);
+  box-shadow: 0 0 4px rgba(81, 203, 238, 1);
+}
+
+ul {
+    list-style-type: none;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(50, 50, 50, 0.8);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 0px 6px 0 rgba(0, 0, 0, 0.7);
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 11px 7px 11px 7px;
+    text-decoration: none;
+    height: 40px;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+
+li.right {float:right; height:40px;}
+li.right a {padding:4px 5px 0px 5px;}
+
+input[type=number] {
+  width:40px; height: 26px; margin: 2px 0px 2px 0px; padding:2px;
+  border:1px solid #aaa;
+  outline: none;
+  text-align:center;
+}
+input[type=number]:focus {
+  border: 1px solid rgba(81, 203, 238, 1);
+  box-shadow: 0 0 4px rgba(81, 203, 238, 1);
+}
+
+input[type=range] {
+    /*removes default webkit styles*/
+    -webkit-appearance: none;
+    
+    /*fix for FF unable to apply focus style bug */
+    border: 1px solid #eeeeee;
+    
+    /*required for proper track sizing in FF*/
+    width: 300px;
+    padding: 0px 0px 0px 0px;
+}
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 10px;
+    background: #ccc;
+    border: none;
+    border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: goldenrod;
+    margin-top: -4px;
+}
+input[type=range]:focus {
+    outline: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #bbb;
+}
+
+input[type=range]::-moz-range-track {
+    width: 300px;
+    height: 10px;
+    background: #ccc;
+    border: none;
+    border-radius: 3px;
+}
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: goldenrod;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: 1px solid white;
+    outline-offset: -1px;
+}
+
+input[type=range]::-ms-track {
+    width: 300px;
+    height: 10px;
+    
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent;
+    
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+
+    /*remove default tick marks*/
+    color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+    background: #666;
+    border-radius: 10px;
+}
+input[type=range]::-ms-fill-upper {
+    background: #ccc;
+    border-radius: 10px;
+}
+input[type=range]::-ms-thumb {
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: goldenrod;
+}
+input[type=range]:focus::-ms-fill-lower {
+    background: #777;
+}
+input[type=range]:focus::-ms-fill-upper {
+    background: #bbb;
+}
+
+/* The Modal (background) */
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: #white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+    font-size:120%;
+    line-height:30px;
+    font-weight:bold;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.modal span {cursor: pointer;}
+
+@media print {
+body {margin:0; padding:0;}
+button, .noprint {display:none; } 
+#resuslayer {display:none; }
+body {font-size:9pt; line-height:11pt margin:0px; }
+h2 {padding:0px; margin:0px;}
+.nomobile { text-align:center; display:block; }
+tr td {padding: 2px 2px 1px 2px; font-color: black; }
+.vasostyle {font-color:black; background-color: white;}
+.column {  width:50%;  vertical-align:top; display:inline-block; padding: 0px 4px 0px 4px;}
+.column1 {  width:40%;  vertical-align:top; display:inline-block; }
+.column2 {  width:60%;  vertical-align:top; display:inline-block; }
+.tableheading { margin: 6px 0px 0px 0px; }
+input[type=number] {font-size:100%; height:20px;margin:0;padding:0;}
+select {height:20px;margin:0;padding:0;}
+#headerarea {max-height:50px;}
+#otherdrugstable td {padding: 0px 2px 0px 2px; font-size:8pt;}
+#about a {display:none;}
+#otherdrugstable tr.noborderb td {padding-bottom:0px;}
+#otherdrugstable tr.noborderu {padding-top:0px;}
+#otherdrugstable tr.noborderu td {padding-top:0px; font-size:80%;}
+/*label { font-size:120%;}*/
+}
+
+@media screen {
+tr.vasostyle {
+  background: #C846C8; 
+  /*background: linear-gradient(to left, #9b25a3, #C846C8);*/
+  color: white; 
+  border-bottom: 2px solid purple;}
+td.subheading {
+  background: #c2d0ef;
+  border-bottom: 1px solid #aaaaaa;
+  /*background: linear-gradient(to top, #c2d0ef, #e5eae9);*/
+} 
+}
+
+@media screen and (min-width:720px) {
+  h2 { border-bottom: 1px solid #ddd;}
+  input[type=number] {width:60px;}
+  .column {  width:50%;  vertical-align:top; display:inline-block; padding: 0px 5px 0px 5px;}
+  .column1 {  width:45%;  vertical-align:top; padding-top:10px; display:inline-block; }
+  .column2 {  width:55%;  vertical-align:top; display:inline-block; }
+  .nomobile { text-align:center; display:block; }
+}
+

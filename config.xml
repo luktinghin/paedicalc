@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.phonegap.example"
+    versionCode = "1"
+    version     = "1.3" >
+
+<!-- versionCode is optional and Android only -->
+
+  <name>PaediCalc</name>
+
+  <description>
+      Body weight based calculator, Dept of AIC, PWH.
+  </description>
+
+  <author href="" email="thluk@outlook.com">
+      Terence Luk
+  </author>
+
+  <icon src="icon.png"> </icon>
+
+</widget>
