@@ -37,26 +37,27 @@
 <div class="entrybox">
 <table id="table1" width=100%;>
   <tr><!-- Row 1 -->
-     <td width=80px><b>Enter BW:</b></td><!-- Col 1 -->
-     <td><input id="inputBW" type="number" min="0" max="50" placeholder="" oninput="dosecalc(this.value)" onchange="dosecalc(this.value)" onclick="this.select()"> kg &nbsp;&nbsp;&nbsp;<span id="spacefiller2" style="font-style: italic;"></span></td>
+     <td width=74px><b>Enter BW:</b></td><!-- Col 1 -->
+     <td><input id="inputBW" type="number" min="0" max="50" placeholder="" oninput="dosecalc(this.value)" onchange="dosecalc(this.value)" onclick="this.select()" style="vertical-align: middle;"> kg &nbsp;&nbsp;&nbsp;<span id="spacefiller2" style="font-style: italic;"></span></td>
   </tr>
   <tr><!-- Row 2 -->
-     <td><b>Enter Age:</b></td><!-- Col 1 -->
+     <td style="vertical-align:top;"><b style="line-height: 30px;">Enter Age:</b></td><!-- Col 1 -->
      <td><input id="inputAge" type="number" min="0" max="10" placeholder="" oninput="ageupdate()" onchange="ageupdate()" onclick="this.select()">
      <select id="ageunit" onchange="ageupdate()">
        <option value="years">Years</option>
        <option value="months">Months</option>
        <option value="days">Days</option>
      </select>
-  <span id="spacefiller" style="font-style: italic;"></span>
+  <br><span id="spacefiller" style="font-style: italic;"></span>
   <span id="predictedBW" style="font-weight:bold;"></span></td><!-- Col 2 -->
   </tr>
 </table>
+<!--
 <div class="noprint">
   <br>
   <label>Or adjust the slider to change body weight:  </label>
   <input id="sliderbar" type="range" min="0" max="50" step="1" onchange="updateTextInput(this.value);dosecalc(this.value)">
-</div>
+</div>-->
 </div><!--end grey box-->
 </div><!--endcolumn-->
 </div><!--endrow-->
@@ -606,7 +607,7 @@ function ageupdate() {
           document.getElementById("ETTdepth").innerHTML=valAge/2+12 + " cm";
         }
       }
-      document.getElementById("navAge").innerHTML="Age: " + valAge + "y";  
+      document.getElementById("navAge").innerHTML="Age: " + "<span style='font-weight:bold;'>" + valAge + "y" + "</span>";  
     }
   }
   else if (valAgeUnit==="months") { // THIS SECTION IS FOR AGE-MONTHS
@@ -699,7 +700,7 @@ function ageupdate() {
         document.getElementById("EBVfactor").innerHTML="70";
         document.getElementById("EBV").innerHTML=Math.round(valbodyweight*70);
       }
-      document.getElementById("navAge").innerHTML="Age: " + valAge + "mth";  
+      document.getElementById("navAge").innerHTML="Age: " + "<span style='font-weight:bold;'>" + valAge + "mth" + "</span>";  
     }
   }
   else if (valAgeUnit==="days") { //THIS SECTION IS FOR AGE-DAYS
@@ -759,7 +760,7 @@ function ageupdate() {
           document.getElementById("ETTdepth").innerHTML="__";
         }
       }
-      document.getElementById("navAge").innerHTML="Age: " + valAge + "d"; 
+      document.getElementById("navAge").innerHTML="Age: " + "<span style='font-weight:bold'>" + valAge + "d" + "</span>"; 
     }  
   }
 }
@@ -807,7 +808,6 @@ function dosecalc(valNum) {
     else if (BWforIVF<20) {var BWforIVFten = BWforIVF-10; document.getElementById("IVFrate").innerHTML=40+BWforIVFten*2;}
     else if (BWforIVF<=50) {var BWforIVFtwenty = BWforIVF-20; document.getElementById("IVFrate").innerHTML=60+BWforIVFtwenty;}
     else {document.getElementById("IVFrate").innerHTML="BW out of range";}
-    document.getElementById("sliderbar").value=valNum;
     document.getElementById("IVFbolus").innerHTML=Math.round(valNum*20*10)/10;
     document.getElementById("propofoldose").innerHTML=Math.round(valNum*3*10)/10;
     document.getElementById("atracuriumdose").innerHTML=Math.round(valNum*0.5*10)/10;
@@ -892,7 +892,7 @@ function dosecalc(valNum) {
     document.getElementById("lignocainewithadrenaline").innerHTML=Math.round(valNum*7*10)/10;
     document.getElementById("lignocainewithoutadrenaline").innerHTML=Math.round(valNum*4*10)/10;
     document.getElementById("bupivacainedose").innerHTML=Math.round(valNum*2*10)/10;
-    document.getElementById("navBW").innerHTML="BW: "+ Math.round(valNum*10)/10 +"kg";
+    document.getElementById("navBW").innerHTML="BW: "+ "<span style='font-weight:bold'>" + Math.round(valNum*10)/10 + "kg"+ "</span>";
   }
 }
 </script>
