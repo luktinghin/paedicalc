@@ -18,6 +18,11 @@
   <li class="right"><a href="#" onClick="showbaselayer()"><img src="iconHome.png" width="30" height="30" /></a></li>
   </ul>
 </div>
+<div class="bottombar noprint" id="searchbar" style="display:none;">
+  <input id="findstring" type="text" style="width:57%; margin:0px 2px 0px 2px;">
+  <button onclick="searchreset()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Clear</button>
+  <button id="findbutton" onclick="searchtext()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Find</button>
+</div>
 <!-- The Modal 
 <div id="myModal" class="modal">
   <div class="modal-content">
@@ -29,20 +34,23 @@
     </div>
   </div>
 </div>-->
-<div class="bodycontent" id="bodycontent1"><div class="noprint"><p style="line-height: 1px; padding-bottom:40px; margin: 0px;">&nbsp;</p></div>
+<div class="bodycontent" id="bodycontent1">
+<div class="noprint"><p style="line-height: 1px; padding-bottom:43px; margin: 0px;">&nbsp;</p></div>
 <div id="baselayer">
 <div class="contentrow" id="headerarea">
-<div class="column1"><h2>Body-Weight Based Calculator</h2><div class="nomobile" style="color:#777; margin: 0px 0px 0px 5px;">Dept of Anaesthesia & Intensive Care<br>Prince of Wales Hospital HK</div></div><!--
+<div class="column1">
+  <h2>Body-Weight Based Calculator</h2>
+  <div class="nomobile" style="color:#777; margin: 0px 0px 0px 5px;">Dept of Anaesthesia & Intensive Care<br>Prince of Wales Hospital HK</div></div><!--
 --><div class="column2">
 <div class="entrybox">
 <table id="table1" width=100%;>
   <tr><!-- Row 1 -->
      <td width=74px><b>Enter BW:</b></td><!-- Col 1 -->
-     <td><input id="inputBW" type="number" min="0" max="50" placeholder="" oninput="dosecalc(this.value)" onchange="dosecalc(this.value)" onclick="this.select()" style="vertical-align: middle;"> kg &nbsp;&nbsp;&nbsp;<span id="spacefiller2" style="font-style: italic;"></span></td>
+     <td><input id="inputBW" type="number" placeholder="" step="0.01" oninput="dosecalc(this.value)" onchange="dosecalc(this.value)" onclick="this.select()" style="vertical-align: middle;"> kg &nbsp;&nbsp;&nbsp;<span id="spacefiller2" style="font-style: italic;"></span></td>
   </tr>
   <tr><!-- Row 2 -->
      <td style="vertical-align:top;"><b style="line-height: 30px;">Enter Age:</b></td><!-- Col 1 -->
-     <td><input id="inputAge" type="number" min="0" max="10" placeholder="" oninput="ageupdate()" onchange="ageupdate()" onclick="this.select()">
+     <td><input id="inputAge" type="number" placeholder="" step="0.1" oninput="ageupdate()" onchange="ageupdate()" onclick="this.select()">
      <select id="ageunit" onchange="ageupdate()">
        <option value="years">Years</option>
        <option value="months">Months</option>
@@ -80,7 +88,7 @@
      <td>IVF maintenance<span style="font-size:80%"> (4-2-1):</span></td><td><span id="IVFrate" class="field">__</span>ml/h</td><!-- Col 1 -->
   </tr>
   <tr>
-    <td>IVF bolus (20ml/kg):</td><td><span id="IVFbolus" class="field">__</span>ml</div></td>
+    <td>IVF bolus (20ml/kg):</td><td><span id="IVFbolus" class="field">__</span>ml</td>
   </tr>
 </table>
 
@@ -207,9 +215,12 @@
      <td>Hydrocortisone (2-4mg/kg):</td><!-- Col 1 -->
      <td><span id="hydrocortisone1" class="field">__</span> to <span id="hydrocortisone2" class="field">__</span>mg</td><!-- Col 2 -->
   </tr>
-  <tr>
-     <td>Salbutamol <b>IV</b><br><span style="font-size:80%">10mg diluted up to 50ml NS (200mcg/ml)</span></td>
-     <td style="font-size:80%">5-10 mcg/kg/min for 1h<br>then 1-2 mcg/kg/min</td>
+  <tr class="noborderb">
+     <td>Salbutamol <b>IV</b></td>
+     <td style="font-size:90%;" rowspan="2">5-10 mcg/kg/min for 1h<br>then 1-2 mcg/kg/min</td>
+  </tr>
+  <tr class="noborderu">
+     <td>10mg diluted up to 50ml NS (200mcg/ml)</td>
   </tr>
   <tr>
      <td>Intralipid 20% (1.5ml/kg): </td>
@@ -276,7 +287,7 @@
   <tr><!-- Row 2 -->
      <td>Phenytoin (20mg/kg):</td><!-- Col 1 -->
      <td><span id="phenytoin" class="field">__</span>mg over 20mins</td><!-- Col 2 -->
-  </tr></div>   
+  </tr>   
 </table>
 </div><!--end visibility toggle-->
 </div><!-- end column
@@ -417,6 +428,7 @@
      <td><i>Intraoperative arrest: </i><b>FiO2 to 100%, discontinue anaesthetics, stop surgical stimulus. If patient is already intubated: continue compressions at 100-120/min, give 1 breath every 6 sec</b>
      </td>
   </tr>
+  <tr>
      <td><i>Reversible causes: </i><b>Hypovolemia, hypoxia, hydrogen ion, hypoglycemia, hypo or hyperK+, hypothermia, tension pneumothorax, cardiac tamponade, pulmonary thromboembolism, coronary thrombosis, toxins</b>
      </td>
   </table>
@@ -441,18 +453,18 @@
 <!--insert more modals here-->
 <div id="modalabout" class="modal" style="display:none;">
   <div class="modal-content">
-    <div class="modal-header notcondensed">ABOUT<span class="close notcondensed" onClick="hidemodal('modalabout')">&times;</span></div>
-    <div class="modal-body notcondensed">
-      <p>Paediatric body-weight based calculator V1.3
-      <p><b>Created by Terence Luk, Prince of Wales Hospital HK, copyright 2017, all rights reserved.</b>
+    <div class="modal-header notcondensed" style="background-image: url('icon.png'); background-repeat: no-repeat; background-position: 5px 5px; background-size: 32px; padding:5px 16px 5px 42px; ">ABOUT<span class="close notcondensed" onClick="hidemodal('modalabout')">&times;</span></div>
+    <div class="modal-body notcondensed" >
+      Paediatric body-weight based calculator
+      <br><b>Created by Terence Luk, <br>Prince of Wales Hospital HK, <br>&#9400; 2017, all rights reserved.</b>
       <br>I would like to thank Dr. Polly Chan and Mr. Thomas Lo for their support and advice.
-      <p><b>Instructions for use</b>
+      <br><br><b>Instructions for use</b>
       <br>Age range: 0-10 years
       <br>(You can select the unit for age: years, months, or days)
       <br>Body weight range: 0-50kg
       <br>
       <br><b>Changelog</b>
-      <br>1.3: Initial release
+      <br>1.3: Initial release (Dec 2017)
     </div>
   </div>
 </div>
@@ -460,10 +472,8 @@
   <div class="modal-content">
     <div class="modal-header notcondensed">FULL DISCLAIMER NOTICE<span class="close notcondensed" onClick="hidemodal('modaldisclaimer')">&times;</span></div>
     <div class="modal-body notcondensed" style="font-size:85%">
-      <b>Full Disclaimer Notice</b>
-      <br>The use of this application ("app") is for reference only; the accuracy of the contents cannot be guaranteed. Administer medications with care and according to clinical need. The author does not accept responsibility or liability for any errors in the information provided or for the misuse or misapplication of material in this app.
+      The use of this application ("app") is for reference only; the accuracy of the contents cannot be guaranteed. Administer medications with care and according to clinical need. The author does not accept responsibility or liability for any errors in the information provided or for the misuse or misapplication of material in this app.
       <br>As a result of rapid advances in medical knowledge, the contents of this app may not be completely up to date. The information contained also should not be considered to be free of errors, or to include all relevant information, nor should it be used as an exclusive basis for decision making. <b>You agree that the use of the information provided in this app is at your sole discretion and risk. </b>We recommend that you obtain independent verification of the information and drug dosages presented in this app from the most updated medical literature, journal articles, package inserts and text books. The user should evaluate the indications, contraindications, potential benefits and risks before applying the information on any specific patient. Please do not use this app if you do not agree to the terms and conditions of this disclaimer.
-      <br>&nbsp;
     </div>
   </div>
 </div>
@@ -471,11 +481,11 @@
   <div class="modal-content">
     <div class="modal-header notcondensed">REFERENCES<span class="close notcondensed" onClick="hidemodal('modalref')">&times;</span></div>
     <div class="modal-body notcondensed">
-      <p><b>Department guidelines</b>
+      <b>Department guidelines</b>
       <br>Guidelines for management of perioperative anaphylaxis (Nov 2016)
       <br>Quick guide on vasoactive drug infusions in paediatric patients for anaesthetists (Oct 2016)
       <br>Management of paediatric cardiac arrest (Sep 2017)
-      <p><b>Books</b>
+      <br><br><b>Books</b>
       <br>PWH Paediatric anaesthesia trainee manual [internal use]
       <br>Smith's anesthesia for infants and children (9ed), Chapter 54
       <br>A practice of anesthesia for infants and children (5ed), pocket reference guide
@@ -493,6 +503,7 @@
      <button id="aboutbutton" type="button" class="endbutton" onclick="setmodal('modalabout')">About</button>
      <button id="disclaimerbutton" type="button" class="endbutton" onclick="setmodal('modaldisclaimer')">Full Disclaimer</button>
      <button id="referencebutton" type="button" class="endbutton" onclick="setmodal('modalref')">References</button>
+    <span onclick="showhide('searchbar'); document.getElementById('findstring').focus();" style="float:right; color:#ddd; font-size:32px;">&#x2315;</span>
 <br> &#9400; 2017 Terence Luk - Version 1.3 - All rights reserved. 
 <br> Disclaimer: The use of the application ("app") is for reference only; the accuracy of the contents cannot be guaranteed. Administer medications with care and according to clinical need. The author does not accept responsibility or liability for any errors in the information provided or for the misuse or misapplication of material in this app.</p>
 </div><!--end content part-->
@@ -539,6 +550,56 @@ function showvitalslayer() {
   document.getElementById("baselayer").style.display="none";
   document.getElementById("resuslayer").style.display="none";
   document.getElementById("vitalslayer").style.display="block";
+}
+function searchtext(){
+  if (typeof searchtext.counter == 'undefined') {
+    searchtext.counter = 0;
+    searchtext.terms = new Array();
+    searchtext.terms[0] = document.getElementById("findstring").value;
+  } else {
+    searchtext.terms.push(document.getElementById("findstring").value);
+  }
+  if (searchtext.counter>=1) {
+      if (window.find && window.getSelection) {
+      document.designMode="on";
+      var sel = window.getSelection();
+      sel.collapse(document.getElementById("bodycontent1", 0));
+      while (window.find(searchtext.terms[searchtext.counter-1])) {
+        document.getElementById("findbutton").blur();
+        document.execCommand("hiliteColor", false, "transparent");
+        sel.collapseToEnd();
+      } 
+      document.designMode = "off";
+    }
+  }
+  if (window.find && window.getSelection) {
+    document.designMode="on";
+    var sel = window.getSelection();
+    sel.collapse(document.getElementById("bodycontent1", 0));
+    while (window.find(searchtext.terms[searchtext.counter])) {
+      document.getElementById("findbutton").blur();
+      document.execCommand("hiliteColor", false, "yellow");
+      sel.collapseToEnd();
+    } 
+    document.designMode = "off";
+  }
+  ++searchtext.counter;
+}
+function searchreset() {
+  var termX = document.getElementById("findstring").value;
+    if (window.find && window.getSelection) {
+      document.designMode="on";
+      var sel = window.getSelection();
+      sel.collapse(document.getElementById("bodycontent1", 0));
+      while (window.find(termX)) {
+        document.getElementById("findbutton").blur();
+        document.execCommand("hiliteColor", false, "transparent");
+        sel.collapseToEnd();
+      } 
+      document.designMode = "off";
+    }
+  document.getElementById("searchbar").style = "display:none";
+  document.getElementById("findstring").value = "";
 }
 function ageupdate() {
   valAgeUnit = document.getElementById("ageunit").value;
@@ -607,7 +668,7 @@ function ageupdate() {
           document.getElementById("ETTdepth").innerHTML=valAge/2+12 + " cm";
         }
       }
-      document.getElementById("navAge").innerHTML="Age: " + "<span style='font-weight:bold;'>" + valAge + "y" + "</span>";  
+      document.getElementById("navAge").innerHTML="Age: " + valAge + "y";  
     }
   }
   else if (valAgeUnit==="months") { // THIS SECTION IS FOR AGE-MONTHS
@@ -700,7 +761,7 @@ function ageupdate() {
         document.getElementById("EBVfactor").innerHTML="70";
         document.getElementById("EBV").innerHTML=Math.round(valbodyweight*70);
       }
-      document.getElementById("navAge").innerHTML="Age: " + "<span style='font-weight:bold;'>" + valAge + "mth" + "</span>";  
+      document.getElementById("navAge").innerHTML="Age: " + valAge + "mth";  
     }
   }
   else if (valAgeUnit==="days") { //THIS SECTION IS FOR AGE-DAYS
@@ -760,7 +821,7 @@ function ageupdate() {
           document.getElementById("ETTdepth").innerHTML="__";
         }
       }
-      document.getElementById("navAge").innerHTML="Age: " + "<span style='font-weight:bold'>" + valAge + "d" + "</span>"; 
+      document.getElementById("navAge").innerHTML="Age: " + valAge + "d" ; 
     }  
   }
 }
@@ -777,9 +838,6 @@ function resetAge() {
   }
   document.getElementById("predictedBW").innerHTML="";
   document.getElementById("navAge").innerHTML="";
-}
-function updateTextInput(valBW) {
-  document.getElementById("inputBW").value=valBW;
 }
 function dosecalc(valNum) { 
   if ((valNum.length===0)||(valNum<0)||(valNum>50)) {
@@ -892,7 +950,7 @@ function dosecalc(valNum) {
     document.getElementById("lignocainewithadrenaline").innerHTML=Math.round(valNum*7*10)/10;
     document.getElementById("lignocainewithoutadrenaline").innerHTML=Math.round(valNum*4*10)/10;
     document.getElementById("bupivacainedose").innerHTML=Math.round(valNum*2*10)/10;
-    document.getElementById("navBW").innerHTML="BW: "+ "<span style='font-weight:bold'>" + Math.round(valNum*10)/10 + "kg"+ "</span>";
+    document.getElementById("navBW").innerHTML="BW: "+ Math.round(valNum*10)/10 + "kg";
   }
 }
 </script>
