@@ -19,9 +19,11 @@
   </ul>
 </div>
 <div class="bottombar noprint" id="searchbar" style="display:none;">
-  <input id="findstring" type="text" style="width:57%; margin:0px 2px 0px 2px;">
-  <button onclick="searchreset()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Clear</button>
-  <button id="findbutton" onclick="searchtext()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Find</button>
+  <!--<form action="" onsubmit="searchtext(); return false;">-->
+    <input id="findstring" type="search" style="width:57%; margin:0px 2px 0px 2px;">
+    <button onclick="searchreset()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Clear</button>
+    <button id="findbutton" onclick="searchtext()" style="float:right; width:19%; margin:0px 2px 0px 2px;" type="submit">Find</button>
+  <!--</form>-->
 </div>
 <!-- The Modal -->
 <div id="myModal" class="modal" style="display:none;">
@@ -29,7 +31,7 @@
     <div class="modal-header notcondensed">PaediCalc<span class="close notcondensed" onClick="hidemodal('myModal')">&times;</span></div>
     <div class="modal-body notcondensed" style="font-size:120%">
       <p>Choose one of the options below:</p>
-      <p><span onClick="hidemodal()"> - Continue as webpage</span></p>
+      <p><span onClick="hidemodal('myModal')"> - Continue as webpage</span></p>
       <p><span onClick="window.location.replace('https://build.phonegap.com/apps/2775985/download/android')"> - Download the Android app</span></p>
     </div>
   </div>
