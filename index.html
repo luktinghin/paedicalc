@@ -23,8 +23,8 @@
   <button onclick="searchreset()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Clear</button>
   <button id="findbutton" onclick="searchtext()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Find</button>
 </div>
-<!-- The Modal 
-<div id="myModal" class="modal">
+<!-- The Modal -->
+<div id="myModal" class="modal" style="display:none;">
   <div class="modal-content">
     <div class="modal-header notcondensed">PaediCalc<span class="close notcondensed" onClick="hidemodal('myModal')">&times;</span></div>
     <div class="modal-body notcondensed" style="font-size:120%">
@@ -33,7 +33,7 @@
       <p><span onClick="window.location.replace('https://build.phonegap.com/apps/2775985/download/android')"> - Download the Android app</span></p>
     </div>
   </div>
-</div>-->
+</div>
 <div class="bodycontent" id="bodycontent1">
 <div class="noprint"><p style="line-height: 1px; padding-bottom:43px; margin: 0px;">&nbsp;</p></div>
 <div id="baselayer">
@@ -509,7 +509,10 @@
 </div><!--end content part-->
 
 <script>
-var modal = document.getElementById('myModal');
+var app = document.URL.indexOf('http://')=== -1 && document.URL.indexOf('https://') === -1; /* check running within a webbrowser, -1 means http never occurred*/
+if (!app) { /*if not app, setmodal for download link */
+  setmodal('myModal');
+} 
 function hidemodal(modalname) {
   document.getElementById(modalname).style.display = "none";
 }
