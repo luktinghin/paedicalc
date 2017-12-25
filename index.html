@@ -34,6 +34,7 @@
     </div>
   </div>
 </div>
+<!--end modal-->
 <div class="bodycontent" id="bodycontent1">
 <div class="noprint"><p style="line-height: 1px; padding-bottom:43px; margin: 0px;">&nbsp;</p></div>
 <div id="baselayer">
@@ -512,6 +513,8 @@
 var app = document.URL.indexOf('http://')=== -1 && document.URL.indexOf('https://') === -1; /* check running within a webbrowser, -1 means http never occurred*/
 if (!app) { /*if not app, setmodal for download link */
   setmodal('myModal');
+  var modal = document.getElementById('myModal');
+  alert('ready');
 } 
 function hidemodal(modalname) {
   document.getElementById(modalname).style.display = "none";
