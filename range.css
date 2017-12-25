@@ -36,8 +36,9 @@
 
 body {font-size: 10.5pt; margin: 0px;}
 
-h2 {color: blue; font-size: 140%; line-height: 20px; margin: 10px 10px 0px 10px; padding-bottom: 4px; 
-text-align:center;}
+h2 {color: blue; font-size: 140%; line-height: 20px; 
+  margin: 5px 10px 0px 10px; padding-bottom: 4px; 
+  text-align:center;}
 
 .bodycontent { padding:2px 4px 2px 4px; }
 .contentrow { padding-bottom: 5px;}
@@ -59,6 +60,10 @@ text-align:center;}
   display:block;
   padding: 0px 0px 0px 0px;
   box-sizing: border-box;
+    -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .tableheading { 
