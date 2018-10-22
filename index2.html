@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<link rel="stylesheet" href="range.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <title>PaediCalc</title>
+  </head>
+<body>
+
+<div class="noprint">
+  <ul>
+  <li><a class="active" href="#" onClick="showbaselayer()">PaediCalc</a></li>
+  <li><a href="#"><span id="navBW"></span></a></li>
+  <li><a href="#"><span id="navAge"></span></a></li>
+  <li class="right"><a href="#" onClick="setmodal('modalGC')">GC</a></li>
+  <li class="right"><a href="#" onClick="showvitalslayer()"><img src="iconVitals.png" width="30" height="30" /></a></li>
+  <li class="right"><a href="#" onClick="showresuslayer()"><img src="iconHeart.png" width="30" height="30" /></a></li>
+  <li class="right"><a href="#" onClick="showbaselayer()"><img src="iconHome.png" width="30" height="30" /></a></li>
+  </ul>
+</div>
+<div class="bottombar noprint" id="searchbar" style="display:none;">
+  <!--<form action="" onsubmit="searchtext(); return false;">-->
+    <input id="findstring" type="search" style="width:57%; margin:0px 2px 0px 2px;">
+    <button onclick="searchreset()" style="float:right; width:19%; margin:0px 2px 0px 2px;">Clear</button>
+    <button id="findbutton" onclick="searchtext()" style="float:right; width:19%; margin:0px 2px 0px 2px;" type="submit">Find</button>
+  <!--</form>-->
+</div>
+<!-- The Modal -->
+<div id="myModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header notcondensed">PaediCalc<span class="close notcondensed" onClick="hidemodal('myModal')">&times;</span></div>
+    <div class="modal-body notcondensed" style="font-size:120%">
+      <p>Choose one of the options below:</p>
+      <p><span onClick="hidemodal('myModal')"> - Continue as webpage</span></p>
+      <p><span onClick="window.location.replace('https://build.phonegap.com/apps/2775985/download/android')"> - Download the Android app</span></p>
+    </div>
+  </div>
+</div>
+<!--end modal-->
+<div class="bodycontent" id="bodycontent1">
+<div class="noprint"><p style="line-height: 1px; padding-bottom:50px; margin: 0px;">&nbsp;</p></div>
+<div id="baselayer">
+<div class="contentrow" id="headerarea">
+<div class="column1">
+  <h2>Body-Weight Based Calculator</h2>
+  <div class="nomobile" style="color:#777; margin: 0px 0px 0px 5px;">Dept of Anaesthesia & Intensive Care<br>Prince of Wales Hospital HK</div></div><!--
+--><div class="column2">
+<div class="entrybox">
+<table id="table1" width=100%;>
+  <tr><!-- Row 1 -->
+     <td width=74px><b>Enter BW:</b></td><!-- Col 1 -->
+     <td><input id="inputBW" type="number" placeholder="" step="0.01" oninput="dosecalc(this.value)" onchange="dosecalc(this.value)" onclick="this.select()" style="vertical-align: middle;"> kg &nbsp;&nbsp;&nbsp;<span id="spacefiller2" style="font-style: italic;"></span></td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td style="vertical-align:top;"><b style="line-height: 30px;">Enter Age:</b></td><!-- Col 1 -->
+     <td><input id="inputAge" type="number" placeholder="" step="0.1" oninput="ageupdate()" onchange="ageupdate()" onclick="this.select()">
+     <select id="ageunit" onchange="ageupdate()">
+       <option value="years">Years</option>
+       <option value="months">Months</option>
+       <option value="days">Days</option>
+     </select>
+  <br><span id="spacefiller" style="font-style: italic;"></span>
+  <span id="predictedBW" style="font-weight:bold;"></span></td><!-- Col 2 -->
+  </tr>
+</table>
+<!--
+<div class="noprint">
+  <br>
+  <label>Or adjust the slider to change body weight:  </label>
+  <input id="sliderbar" type="range" min="0" max="50" step="1" onchange="updateTextInput(this.value);dosecalc(this.value)">
+</div>-->
+</div><!--end grey box-->
+</div><!--endcolumn-->
+</div><!--endrow-->
+<!--
+-->
+<div class="contentrow">
+<div class="column">
+<p class="tableheading">AIRWAY & IVF</p>
+<table width="100%">
+  <tr><!-- Row 1 -->
+     <td>ETT size:</td><td><span id="ETTsize">__</span></td><!-- Col 1 -->
+  </tr>
+  <tr>
+    <td>ETT depth:</td><td><span id="ETTdepth">__</span></td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>LMA size:</td><td><span id="LMAsize" class="field"></span></td><!-- Col 1 -->
+  </tr>
+  <tr><!-- Row 3 -->
+     <td>IVF maintenance<span style="font-size:80%"> (4-2-1):</span></td><td><span id="IVFrate" class="field">__</span>ml/h</td><!-- Col 1 -->
+  </tr>
+  <tr>
+    <td>IVF bolus (20ml/kg):</td><td><span id="IVFbolus" class="field">__</span>ml</td>
+  </tr>
+</table>
+
+<p class="tableheading">INTRAOPERATIVE</p>
+<table width="100%">
+  <tr>
+     <td width="1%" style="background-color:rgb(255,255,0);"></td>
+	 <td>Propofol (3mg/kg): </td>
+     <td><span id="propofoldose" class="field">___</span> mg </td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td width="1%" style="background-color:rgb(255,114,118);"></td>
+     <td>Atracurium (0.5mg/kg): </td><!-- Col 1 -->
+     <td><span id="atracuriumdose" class="field">___</span> mg</td><!-- Col 2 -->
+  </tr>
+    <tr>
+     <td width="1%" style="background-color:rgb(133,199,277);"></td>
+     <td>Fentanyl (1-2mcg/kg): </td>
+     <td><span id="fentanyldose1" class="field">___</span> to <span id="fentanyldose2" class="field">___</span> mcg </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:rgb(133,199,277);"></td>
+     <td>Morphine (0.1mg/kg): </td>
+     <td><span id="morphinedose" class="field">___</span> mg </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:#ffffff;"></td>
+     <td>Paracetamol <b>IV</b> (<span id="IVpanadolBW" style="font-size:80%;"></span>)</td>
+     <td><span id="IVpanadol" class="field">___</span> mg slow infusion</td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:#ffffff;"></td>
+     <td>Paracetamol <b>PR</b> (30mg/kg) </td>
+     <td><span id="PRpanadol" class="field">___</span> mg </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:#ffffff;"></td>
+     <td>Ondansetron (0.1mg/kg) </td>
+     <td><span id="ondansetrondose" class="field">___</span> mg </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-image:url('neostigmine.gif');"></td>
+     <td>Neostigmine (50mcg/kg)</td>
+     <td><span id="neostigminedose" class="field">___</span> mg </td>
+  </tr>
+</table>
+</div><!-- end column
+--><div class="column">
+<p class="tableheading">HAEMAT</p>
+<table width="100%">
+  <tr><!-- Row 1 -->
+     <td>Blood volume (<span id="EBVfactor" class="field">70</span>ml/kg) = <span id="EBV" class="field">__</span>ml</td><!-- Col 1 -->
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>PRBC (4ml/kg) = <span id="PRBC4" class="field">__</span>ml <div style="float:right;">(&uarr; 1g/dL)</div></td><!-- Col 1 -->
+  </tr>
+  <tr><!-- Row 3 -->
+     <td>PRBC (10ml/kg) = <span id="PRBC10" class="field">__</span>ml <div style="float:right;">(&uarr; 2.5g/dL)</div></td><!-- Col 1 -->
+  </tr>
+  <tr><!-- Row 3 -->
+     <td>Platelets (10ml/kg) = <span id="platelets" class="field">__</span>ml</td><!-- Col 1 -->
+  </tr>
+  <tr><!-- Row 3 -->
+     <td>FFP (15ml/kg) = <span id="FFP" class="field">__</span>ml</td><!-- Col 1 -->
+  </tr>
+</table>
+<p class="tableheading">EMERGENCIES</p>
+<table width="100%">
+  <tr>
+     <td width="1%" style="background-color:rgb(163,217,99);"></td>
+     <td>Atropine (20mcg/kg): </td>
+     <td><span id="atropinedose" class="field">___</span> mg </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:rgb(255,114,118);"></td>
+     <td>Suxamethonium (1.5mg/kg): </td>
+     <td><span id="suxdose" class="field">___</span> mg </td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td width="1%" style="background-color:rgb(222,191,217);"></td>
+     <td>Adrenaline (10mcg/kg): <br><i style="font-size: 80%"> for cardiac arrest</i></td><!-- Col 1 -->
+     <td><span id="adrenalinedose" class="field">__</span> mcg i.e. <span id="adrenalineML" class="field">__</span> ml <span style="font-size: 80%">&nbsp;(1:10,000)</span></td><!-- Col 2 -->
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:rgb(222,191,217);"></td>
+     <td>Adrenaline (1mcg/kg): <br><i style="font-size: 80%"> for anaphylaxis, initial dose IV</i></td>
+     <td><span id="adrenalinedose1mcg" class="field">__</span> mcg i.e. <span id="adrenalineML1mcg" class="field">__</span> ml <span style="font-size: 80%">&nbsp;(1:10,000)</span></td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:black;"></td>
+     <td>Sync.Cardioversion <span style="font-size:80%">(0.5&rarr;1&rarr;2J/kg):</span></td>
+     <td><span id="cardiover1" class="field">__</span>&rarr;
+	 <span id="cardiover2" class="field">__</span>&rarr;
+	 <span id="cardiover3" class="field">__</span>J</td>
+  </tr>
+    <tr>
+     <td width="1%" style="background-color:black;"></td>
+     <td>Defibrillation (2-4J/kg): </td>
+     <td><span id="defibdose1" class="field">__</span> to <span id="defibdose2" class="field">__</span>J</td>
+  </tr>
+</table>
+</div><!--end column-->
+</div><!-- end contentrow-->
+<div class="contentrow">
+<div class="column">
+<p class="tableheading">OTHER DRUGS <button class="showhidebutton" onclick="showhide('otherdrugs');">  SHOW / HIDE CONTENT &darr; </button></p>
+<div id="otherdrugs">
+<table width="100%" id="otherdrugstable">
+  <tr>
+     <td colspan="2" class="subheading notcondensed">Cardiac & Resuscitation</td>
+  </tr>
+  <tr class="noborderb"><!-- Row 1 -->
+     <td>ATP (0.05mg/kg):</td><!-- Col 1 -->
+     <td><span id="ATP" class="field">__</span> mg</td><!-- Col 2 -->
+  </tr>
+  <tr class="noborderu">
+     <td colspan="2">repeat every 2mins, each increment 0.05mg/kg, up to 0.35 mg/kg (max 20mg)</td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>Amiodarone (5mg/kg): </td><!-- Col 1 -->
+     <td><span id="amiodose" class="field">__</span> mg</td><!-- Col 2 -->
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>Hydrocortisone (2-4mg/kg):</td><!-- Col 1 -->
+     <td><span id="hydrocortisone1" class="field">__</span> to <span id="hydrocortisone2" class="field">__</span>mg</td><!-- Col 2 -->
+  </tr>
+  <tr class="noborderb">
+     <td>Salbutamol <b>IV</b></td>
+     <td style="font-size:90%;" rowspan="2">5-10 mcg/kg/min for 1h<br>then 1-2 mcg/kg/min</td>
+  </tr>
+  <tr class="noborderu">
+     <td>10mg diluted up to 50ml NS (200mcg/ml)</td>
+  </tr>
+  <tr>
+     <td>Intralipid 20% (1.5ml/kg): </td>
+     <td><span id="intralipid" class="field">__</span> ml over 1 min</td>
+  <tr>
+     <td>Dantrolene (2.5mg/kg): </td>
+     <td><span id="dantrolene" class="field">__</span> mg</td>
+  </tr>
+  <tr>
+     <td colspan="2" class="subheading notcondensed">Metabolic & Electrolytes</td>
+  </tr>
+  <tr><!-- Row 1 -->
+     <td>Calcium gluconate 10% <span style="font-size:80%">(0.3ml/kg):</span></td><!-- Col 1 -->
+     <td><span id="cagluconate" class="field">__</span>ml slow IV</td><!-- Col 2 -->
+  </tr>
+  <tr class="noborderb"><!-- Row 2 -->
+     <td>Magnesium (25-50mg/kg):</td><!-- Col 1 -->
+     <td><span id="magnesium1" class="field">__</span> to <span id="magnesium2" class="field">__</span>mg<span style="font-size:80%"> over 20mins</span></td><!-- Col 2 -->
+  </tr>
+  <tr class="noborderu">
+     <td colspan="2" >approx. <span id="magnesiumml1" class="field">__</span> to <span id="magnesiumml2" class="field">__</span> ml (0.05-0.1ml/kg) of standard preparation (49.3%&asymp;2mmol/ml)</td>
+  </tr>
+  <tr class="noborderb"><!-- Row 2 -->
+     <td>Dextrose (D10W) (2ml/kg):</td>
+     <td><span id="D10W" class="field">__</span> ml</td><!-- Col 2 -->
+  </tr>
+  <tr class="noborderu">
+     <td colspan="2">make D10W by diluting 10ml D50W in water make up to 50ml</td>
+  </tr>
+  <tr>
+     <td>DI drip <br><span style="font-size:80%">(0.1unit/kg insulin + D50W 2ml/kg):</span></td><!-- Col 1 -->
+     <td><span id="DIdripInsulin" class="field">__</span>U insulin + <br><span id="DIdripDextrose" class="field">__</span>ml D50W <span style="font-size:80%">over 20mins</span><span id="DIspacefiller"></span></td><!-- Col 2 -->
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>NaHCO3 8.4% (1ml/kg):</td><!-- Col 1 -->
+     <td><span id="sodiumbicarb" class="field">__</span>ml slow IV</td><!-- Col 2 -->
+  </tr> 
+  <tr>
+     <td colspan="2" class="subheading notcondensed">Reversal agents</td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>Naloxone <span style="font-size:80%">(4mcg/kg, repeat as necessary)</span>:</td><!-- Col 1 -->
+     <td><span id="naloxone" class="field">__</span>mcg <span style="font-size:80%">initial dose, slow IV</span></td><!-- Col 2 -->
+  </tr>  
+  <tr><!-- Row 2 -->
+     <td>Flumazenil (10mcg/kg):</td><!-- Col 1 -->
+     <td><span id="flumazenil" class="field">__</span></td><!-- Col 2 -->
+  </tr> 
+  <tr>
+     <td colspan="2" class="subheading notcondensed">Neuro</td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>Mannitol 20% <br><span style="font-size:80%">(0.25-0.5g/kg=1.25-2.5ml/kg)</span></td><!-- Col 1 -->
+     <td><span id="mannitol1" class="field">__</span> to <span id="mannitol2" class="field">__</span>ml <span style="font-size:80%">over 30mins</span></td><!-- Col 2 -->
+  </tr>  
+  <tr><!-- Row 2 -->
+     <td>Lorazepam (0.1mg/kg):</td><!-- Col 1 -->
+     <td><span id="lorazepam" class="field">__</span> mg</td><!-- Col 2 -->
+  </tr>    
+  <tr>
+     <td>Midazolam<span style="font-size:80%"> (0.1-0.2mg/kg) </span><b>IV</b> or <b>IM</b>:</td>
+     <td><span id="midazolam1" class="field">__</span> to <span id="midazolam2" class="field">__</span> mg</td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>Phenytoin (20mg/kg):</td><!-- Col 1 -->
+     <td><span id="phenytoin" class="field">__</span>mg over 20mins</td><!-- Col 2 -->
+  </tr>   
+</table>
+</div><!--end visibility toggle-->
+</div><!-- end column
+--><div class="column">
+<p class="tableheading"> VASOPRESSOR <button class="showhidebutton" onclick="showhide('vasopressorcontent');"> SHOW / HIDE CONTENT &darr; </button></p> 
+<div id="vasopressorcontent">
+<table width="100%" id="vasotable">
+  <tr class="vasostyle">
+     <td><b>Dopamine</b></td>
+   <td>Preparation: 200mg in 5ml (40mg/ml)</td>
+  </tr>
+  <tr>
+     <td>Dosage: </td>
+   <td><span id="dopamineDOSE" class="field">__</span> mg <span style="font-size:80%">[BW(kg)x3]</span> dilute up to 50ml NS/D5<br></td>
+  </tr>
+  <tr>
+     <td>Dilution:</td>
+   <td>Add <span id="dopamineNEAT" class="field">__</span> ml NEAT drug to <span id="dopamineDILUTENT" class="field">__</span> ml NS/D5<span id="spacefillerdopamine"></span></td>
+  </tr>
+  <tr>
+     <td>Infuse at: </td>
+   <td>1-20 mcg/kg/min = 1-20 ml/h</td>
+  </tr>
+  <tr class="vasostyle">
+     <td><b>Dobutamine</b></td>
+   <td>Preparation: 250mg in 20ml (12.5mg/ml)</td>
+  </tr>
+  <tr>
+     <td>Dosage: </td>
+   <td><span id="dobutDOSE" class="field">__</span> mg <span style="font-size:80%">[BW(kg)x3]</span> dilute up to 50ml NS/D5<br></td>
+  </tr>
+  <tr>
+     <td>Dilution:</td>
+   <td>Add <span id="dobutNEAT" class="field">__</span> ml NEAT drug to <span id="dobutDILUTENT" class="field">__</span> ml NS/D5</td>
+  </tr>
+  <tr>
+     <td>Infuse at: </td>
+   <td>1-20 mcg/kg/min = 1-20 ml/h</td>
+  </tr>
+  <tr class="vasostyle">
+     <td><b>Adrenaline</b></td>
+   <td>Preparation: 1:10,000 (0.1mg/ml)</td>
+  </tr>
+  <tr>
+     <td>Dosage: </td>
+   <td><span id="adrenDOSE" class="field">__</span> dilute up to 50ml NS/D5<br></td>
+  </tr>
+  <tr>
+     <td>Dilution:</td>
+   <td>Add <span id="adrenNEAT" class="field">__</span> ml NEAT drug to <span id="adrenDILUTENT" class="field">__</span> ml NS/D5</td>
+  </tr>
+  <tr>
+     <td>Infuse at: </td>
+   <td><span id="adrenInfuseAt">0.1-2 mcg/kg/min = 1-20 ml/h</span></td>
+  </tr>
+  <tr class="vasostyle">
+     <td><b>Noradrenaline</b></td>
+   <td>Preparation: 4mg in 4ml (1mg/ml)</td>
+  </tr>
+  <tr>
+     <td>Dosage: </td>
+   <td><span id="noradDOSE" class="field">__</span> dilute up to 50ml NS/D5<br></td>
+  </tr>
+  <tr>
+     <td>Dilution:</td>
+   <td>Add <span id="noradNEAT" class="field">__</span> ml NEAT drug to <span id="noradDILUTENT" class="field">__</span> ml NS/D5</td>
+  </tr>
+  <tr>
+     <td>Infuse at: </td>
+   <td><span id="noradInfuseAt">0.1-0.5 mcg/kg/min = 1-5 ml/h</span></td>
+  </tr>
+  <tr class="vasostyle">
+    <td><b>Phenylephrine</b></td>
+    <td><i>Must be diluted at least 100x before admin</i></td>
+  </tr>
+  <tr>
+    <td>Bolus dose: </td>
+    <td>1-2mcg/kg i.e. <span id="phenylephrine1" class="field">__</span> to <span id="phenylephrine2" class="field">__</span> mcg
+  </tr>
+</table>
+</div><!-- end visibility toggle-->
+<p class="tableheading"> MAX DOSE OF LOCAL ANAESTHETIC </p> 
+<table width="100%" id="latable">
+  <tr>
+     <td width="1%" style="background-color:tan;"></td>
+     <td>Lignocaine <i> with<b>out</b> adrenaline </i>(<i>max</i> 4mg/kg) </td>
+     <td><span id="lignocainewithoutadrenaline" class="field">___</span> <b>mg</b> </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:tan;"></td>
+     <td>Lignocaine <i> with adrenaline </i>(<i>max</i> 7mg/kg) </td>
+     <td><span id="lignocainewithadrenaline" class="field">___</span> <b>mg</b> </td>
+  </tr>
+  <tr>
+     <td width="1%" style="background-color:tan;"></td>
+     <td>(Levo)bupivacaine (<i>max</i> 2mg/kg) </td>
+     <td><span id="bupivacainedose" class="field">___</span> <b>mg</b> </td>
+  </tr>
+</table>
+</div><!--end column-->
+</div><!-- end content row -->
+</div><!-- end baselayer-->
+<div id="resuslayer">
+<div class="contentrow">
+<div class="column"><img src="resus1.jpg" style="max-width:100%" /></div><!--
+--><div class="column">
+  <p class="tableheading">SPECIFIC ASPECTS</p>
+  <table border="1"  width="100%">
+  <tr><!-- Row 1 -->
+     <td>Pulse check: 
+        <br><i>Child:</i> Carotid or femoral pulse
+        <br><i>Infants:</i> Brachial pulse
+     </td>
+  </tr>
+  <tr>
+     <td>Compression-ventilation ratio:
+        <br>30:2 for <i>1 rescuer</i>
+        <br>15:2 for <i>2 rescuers</i>
+     </td>
+  </tr>
+  <tr><!-- Row 2 -->
+     <td>Compression depth: 
+        <br><i>Child:</i> 1/3 AP diameter of chest / 5cm
+        <br><i>Infants:</i> 1/3 AP diameter of chest / 4cm
+     </td>
+  </tr>
+  <tr><!-- Row 3 -->
+     <td>Hand placement:
+        <br><i>Child:</i> 2 hands at lower half of sternum
+        <br><i>Infants:</i> 2 thumb-encircling hands at centre of chest
+     </td>
+  </tr>
+  <tr>
+     <td><i>During CPR: </i><b>Push hard and fast &#40;100-120/min&#41;, allow full chest recoil, minimize interruptions, avoid hyperventilation, rotate compressor every 2 minutes</b>
+     </td>
+  </tr>
+  <tr>
+     <td><i>Intraoperative arrest: </i><b>FiO2 to 100%, discontinue anaesthetics, stop surgical stimulus. If patient is already intubated: continue compressions at 100-120/min, give 1 breath every 6 sec</b>
+     </td>
+  </tr>
+  <tr>
+     <td><i>Reversible causes: </i><b>Hypovolemia, hypoxia, hydrogen ion, hypoglycemia, hypo or hyperK+, hypothermia, tension pneumothorax, cardiac tamponade, pulmonary thromboembolism, coronary thrombosis, toxins</b>
+     </td>
+  </table>
+</div>
+</div>
+<div class="column">
+<img src="resus2A.jpg" style="max-width:100%" />
+</div><!--
+--><div class="column">
+<img src="resus2B.jpg" style="max-width:100%" />
+</div>
+</div><!-- end div resuslayer-->
+<div id="vitalslayer">
+<div class="column">
+  <img src="vitals1.jpg" width="100%"/>
+</div><!--
+--><div class="column">
+  <img src="vitals2.jpg" width="100%"/>
+</div>
+</div><!--end vitals-layer-->
+
+<!--insert more modals here-->
+<div id="modalGC" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header notcondensed">WEIGHT ESTIMATION<span class="close notcondensed" onClick="hidemodal('modalGC')">&times;</span></div>
+    <div class="modal-body notcondensed" >
+      <table>
+        <tr>
+          <td colspan="2" style="background-color:white; font-size:80%;">
+          This tool estimates the body weight from a given body height/length or age, based on local growth chart data. Please note that the body weight estimated is the median body weight for a certain body height/length or age, and care must be taken in the body weight estimation in extreme body habitus.
+          <br>
+          </td>
+        <tr>
+          <td align="right">Height&nbsp;</td>
+          <td><select id="GCBHinput" style="width:100px">
+            <option value=0></option>
+            <option value=55>55</option>
+            <option value=57>57</option>
+            <option value=59>59</option>
+            <option value=61>61</option>
+            <option value=63>63</option>
+            <option value=65>65</option>
+            <option value=67>67</option>
+            <option value=69>69</option>
+            <option value=71>71</option>
+            <option value=73>73</option>
+            <option value=75>75</option>
+            <option value=77>77</option>
+            <option value=79>79</option>
+            <option value=81>81</option>
+            <option value=83>83</option>
+            <option value=85>85</option>
+            <option value=87>87</option>
+            <option value=89>89</option>
+            <option value=91>91</option>
+            <option value=93>93</option>
+            <option value=95>95</option>
+            <option value=97>97</option>
+            <option value=99>99</option>
+            <option value=101>101</option>
+            <option value=103>103</option>
+            <option value=105>105</option>
+            <option value=107>107</option>
+            <option value=109>109</option>
+            <option value=111>111</option>
+            <option value=113>113</option>
+            <option value=115>115</option>
+            <option value=117>117</option>
+            <option value=119>119</option>
+            <option value=121>121</option>
+            <option value=123>123</option>
+            <option value=125>125</option>
+            <option value=127>127</option>
+            <option value=129>129</option>
+            <option value=131>131</option>
+            <option value=133>133</option>
+            <option value=135>135</option>
+            <option value=137>137</option>
+            <option value=139>139</option>
+            <option value=141>141</option>
+            <option value=143>143</option>
+            <option value=145>145</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td align="right">Age&nbsp;</td>
+        <td><select id="GCAgeinput" style="width:100px">
+          <option value=0></option>
+          <option value=0.25>Neonate</option>
+          <option value=1>1 month</option>
+          <option value=2>2 months</option>
+          <option value=3>3 months</option>
+          <option value=4>4 months</option>
+          <option value=5>5 months</option>
+          <option value=6>6 months</option>
+          <option value=8>8 months</option>
+          <option value=10>10 months</option>
+          <option value=12>12 months</option>
+          <option value=15>15 months</option>
+          <option value=18>18 months</option>
+          <option value=21>21 months</option>
+          <option value=24>2 years</option>
+          <option value=30>2.5 years</option>
+          <option value=36>3 years</option>
+          <option value=42>3.5 years</option>
+          <option value=48>4 years</option>
+          <option value=54>4.5 years</option>
+          <option value=60>5 years</option>
+          <option value=66>5.5 years</option>
+          <option value=72>6 years</option>
+          <option value=78>6.5 years</option>
+          <option value=84>7 years</option>
+          <option value=90>7.5 years</option>
+          <option value=96>8 years</option>
+          <option value=102>8.5 years</option>
+          <option value=108>9 years</option>
+          <option value=114>9.5 years</option>
+          <option value=120>10 years</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td align="right">Gender&nbsp;</td>
+        <td><select id="GCGender" style="width:100px">
+          <option value=0>Male</option>
+          <option value=1>Female</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td align="right">Weight&nbsp;</td>
+        <td><input id="GCBWinput" type="number" style="width:70px; background-color:#dddddd;" readonly> kg (estimated)</td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center"><button onclick="calcWFH(GCBHinput.value);" style="width:90%">Estimate weight from height</button></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center"><button onclick="calcWFA(GCAgeinput.value);" style="width:90%">Estimate weight from age</button></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center"><button onclick="sendtoOpener();" style="width:90%">Return to app</button></td>
+      </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="modalabout" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header notcondensed" style="background-image: url('icon.png'); background-repeat: no-repeat; background-position: 5px 5px; background-size: 32px; padding:5px 16px 5px 42px; ">ABOUT<span class="close notcondensed" onClick="hidemodal('modalabout')">&times;</span></div>
+    <div class="modal-body notcondensed" >
+      Paediatric body-weight based calculator
+      <br><b>Created by Terence Luk, <br>Prince of Wales Hospital HK, <br>&#9400; 2018, all rights reserved.</b>
+      <br>I would like to thank Dr. Polly Chan and Mr. Thomas Lo for their support and advice.
+      <br><br><b>Instructions for use</b>
+      <br>Age range: 0-10 years
+      <br>(You can select the unit for age: years, months, or days)
+      <br>Body weight range: 0-50kg
+      <br>
+      <br><b>Changelog</b>
+      <br>1.3: Initial release (Dec 2017)
+      <br>2.0: Added growth chart data (Oct 2018)
+    </div>
+  </div>
+</div>
+<div id="modaldisclaimer" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header notcondensed">FULL DISCLAIMER NOTICE<span class="close notcondensed" onClick="hidemodal('modaldisclaimer')">&times;</span></div>
+    <div class="modal-body notcondensed" style="font-size:85%">
+      The use of this application ("app") is for reference only; the accuracy of the contents cannot be guaranteed. Administer medications with care and according to clinical need. The author does not accept responsibility or liability for any errors in the information provided or for the misuse or misapplication of material in this app.
+      <br>As a result of rapid advances in medical knowledge, the contents of this app may not be completely up to date. The information contained also should not be considered to be free of errors, or to include all relevant information, nor should it be used as an exclusive basis for decision making. <b>You agree that the use of the information provided in this app is at your sole discretion and risk. </b>We recommend that you obtain independent verification of the information and drug dosages presented in this app from the most updated medical literature, journal articles, package inserts and text books. The user should evaluate the indications, contraindications, potential benefits and risks before applying the information on any specific patient. Please do not use this app if you do not agree to the terms and conditions of this disclaimer.
+    </div>
+  </div>
+</div>
+<div id="modalref" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="modal-header notcondensed">REFERENCES<span class="close notcondensed" onClick="hidemodal('modalref')">&times;</span></div>
+    <div class="modal-body notcondensed">
+      <b>Department guidelines</b>
+      <br>Guidelines for management of perioperative anaphylaxis (Nov 2016)
+      <br>Quick guide on vasoactive drug infusions in paediatric patients for anaesthetists (Oct 2016)
+      <br>Management of paediatric cardiac arrest (Sep 2017)
+      <br><br><b>Books</b>
+      <br>PWH Paediatric anaesthesia trainee manual [internal use]
+      <br>Smith's anesthesia for infants and children (9ed), Chapter 54
+      <br>A practice of anesthesia for infants and children (5ed), pocket reference guide
+      <br>Drug doses 17th edition (2017) by Frank Shann
+    </div>
+  </div>
+</div>
+<!--end modal insert-->
+<p style="font-size: 80%;" class="notcondensed" id="about">
+     <select id="fontsizechanger" class="noprint" onchange="changefontsize(this.value)">
+       <option value="120%">Larger font</option>
+       <option value="80%">Smaller font</option>
+       <option value="100%" selected>Normal font</option>
+     </select>
+     <button id="aboutbutton" type="button" class="endbutton" onclick="setmodal('modalabout')">About</button>
+     <button id="disclaimerbutton" type="button" class="endbutton" onclick="setmodal('modaldisclaimer')">Full Disclaimer</button>
+     <button id="referencebutton" type="button" class="endbutton" onclick="setmodal('modalref')">References</button>
+    <span onclick="showhide('searchbar'); document.getElementById('findstring').focus();" style="float:right; color:#ddd; font-size:32px;">&#x2315;</span>
+<br> &#9400; 2018 Terence Luk - Version 2.0 BETA - All rights reserved. 
+<br> Disclaimer: The use of the application ("app") is for reference only; the accuracy of the contents cannot be guaranteed. Administer medications with care and according to clinical need. The author does not accept responsibility or liability for any errors in the information provided or for the misuse or misapplication of material in this app.</p>
+</div><!--end content part-->
+
+<script>
+var app = document.URL.indexOf('http://')=== -1 && document.URL.indexOf('https://') === -1; /* check running within a webbrowser, -1 means http never occurred*/
+if (!app) { /*if not app, setmodal for download link */
+  setmodal('myModal');
+  var modal = document.getElementById('myModal');
+} 
+function hidemodal(modalname) {
+  document.getElementById(modalname).style.display = "none";
+}
+function setmodal(modalname) {
+  var modal = document.getElementById(modalname);
+  modal.style.display = "block";
+  window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+  }
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+function changefontsize(valSize) {
+  var y = valSize;
+  document.getElementById("bodycontent1").style.fontSize=y;
+}
+function showhide(contentname) {
+  var x = document.getElementById(contentname);
+  if (x.style.display==='none') {x.style.display='inline';}
+  else {x.style.display='none';}
+}
+function showresuslayer() {
+  document.getElementById("baselayer").style.display="none";
+  document.getElementById("resuslayer").style.display="block";
+  document.getElementById("vitalslayer").style.display="none";
+}
+function showbaselayer() {
+  document.getElementById("baselayer").style.display="block";
+  document.getElementById("resuslayer").style.display="none";
+  document.getElementById("vitalslayer").style.display="none";
+}
+function showvitalslayer() {
+  document.getElementById("baselayer").style.display="none";
+  document.getElementById("resuslayer").style.display="none";
+  document.getElementById("vitalslayer").style.display="block";
+}
+function showvGClayer() {
+  document.getElementById("baselayer").style.display="none";
+  document.getElementById("resuslayer").style.display="none";
+  document.getElementById("vitalslayer").style.display="block";
+}
+function searchtext(){
+  if (typeof searchtext.counter == 'undefined') {
+    searchtext.counter = 0;
+    searchtext.terms = new Array();
+    searchtext.terms[0] = document.getElementById("findstring").value;
+  } else {
+    searchtext.terms.push(document.getElementById("findstring").value);
+  }
+  if (searchtext.counter>=1) {
+      if (window.find && window.getSelection) {
+      document.designMode="on";
+      var sel = window.getSelection();
+      sel.collapse(document.getElementById("bodycontent1", 0));
+      while (window.find(searchtext.terms[searchtext.counter-1])) {
+        document.getElementById("findbutton").blur();
+        document.execCommand("hiliteColor", false, "transparent");
+        sel.collapseToEnd();
+      } 
+      document.designMode = "off";
+    }
+  }
+  if (window.find && window.getSelection) {
+    document.designMode="on";
+    var sel = window.getSelection();
+    sel.collapse(document.getElementById("bodycontent1", 0));
+    while (window.find(searchtext.terms[searchtext.counter])) {
+      document.getElementById("findbutton").blur();
+      document.execCommand("hiliteColor", false, "yellow");
+      sel.collapseToEnd();
+    } 
+    document.designMode = "off";
+  }
+  ++searchtext.counter;
+}
+function searchreset() {
+  var termX = document.getElementById("findstring").value;
+    if (window.find && window.getSelection) {
+      document.designMode="on";
+      var sel = window.getSelection();
+      sel.collapse(document.getElementById("bodycontent1", 0));
+      while (window.find(termX)) {
+        document.getElementById("findbutton").blur();
+        document.execCommand("hiliteColor", false, "transparent");
+        sel.collapseToEnd();
+      } 
+      document.designMode = "off";
+    }
+  document.getElementById("searchbar").style = "display:none";
+  document.getElementById("findstring").value = "";
+}
+function ageupdate() {
+  valAgeUnit = document.getElementById("ageunit").value;
+  if (valAgeUnit==="years") {
+    var valAge=Math.round((document.getElementById("inputAge").value)*10)/10;
+    //Add exclusion criteria first
+    if (document.getElementById("inputAge").value.length===0) {
+      resetAge();
+    }
+    else if ((valAge<0)||(valAge>10)) {
+      resetAge(); 
+    }
+    else {   // then calculate ETT size and depth based on AGE, and return navbar AGE prompt
+      if (valAge<1) {
+        //get body weight
+        valbodyweight = document.getElementById("inputBW").value;
+        document.getElementById("EBVfactor").innerHTML="80";
+        document.getElementById("EBV").innerHTML=Math.round(valbodyweight*80);
+        if ((valbodyweight>0.01)&&(valbodyweight<1)) {
+          if ((valbodyweight>0.01)&&(valbodyweight<0.7)) {
+            document.getElementById("ETTsize").innerHTML="#2.0-2.5 uncuffed" + "<i style='font-size:80%'>" + " for Neonates<0.7kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="Around 6cm";
+          }
+          else if ((valbodyweight>=0.7)&&(valbodyweight<1)) {
+            document.getElementById("ETTsize").innerHTML="#2.5 uncuffed" + "<i style='font-size:80%'>" + " for Neonates<1kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="6-6.5cm";            
+          }
+        }
+        else if ((valbodyweight>=1)&&(valbodyweight<3.5)) {
+          if ((valbodyweight>=1)&&(valbodyweight<2)) {
+            document.getElementById("ETTsize").innerHTML="#3.0 uncuffed" + "<i style='font-size:80%'>" + " for Neonates 1-3.5kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="7cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+          else if ((valbodyweight>=2)&&(valbodyweight<3)) {
+            document.getElementById("ETTsize").innerHTML="#3.0 uncuffed"+ "<i style='font-size:80%'>" + " for Neonates 1-3.5kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="8cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+          else if ((valbodyweight>=3)&&(valbodyweight<3.5)) {
+            document.getElementById("ETTsize").innerHTML="#3.0-3.5 uncuffed, or" + "<br>" + "#3.0 microcuff" + "<i style='font-size:80%'>" + " for term neonates >=3kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="9cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+        }
+        else if (valbodyweight>=3.5) {
+          document.getElementById("ETTsize").innerHTML="#3.5 uncuffed, or" + "<br>" + "#3.0 microcuff"  + "<i style='font-size:80%'>" + " for term>=3kg up to <8mo" + "</i>";
+          document.getElementById("ETTdepth").innerHTML="9-10cm" + "<i style='font-size:80%'>" + " for term neonates" + "</i>";
+        }
+        else {
+          // clear ETT size and depth fields if BW unknown
+          document.getElementById("ETTsize").innerHTML="__";
+          document.getElementById("ETTdepth").innerHTML="__";
+        }
+      }
+      else if (valAge<2) {
+        document.getElementById("ETTsize").innerHTML="#3.5 microcuff" + "<i style='font-size:80%'>" + " for 8mo to <2y" + "</i>";
+        document.getElementById("ETTdepth").innerHTML="10-11cm" + "<i style='font-size:80%'>" + " for 1-year-old" + "</i>"}
+      else if (valAge<4) {document.getElementById("ETTsize").innerHTML="#4.0 microcuff";}
+      else if (valAge<6) {document.getElementById("ETTsize").innerHTML="#4.5 microcuff";}
+      else if (valAge<8) {document.getElementById("ETTsize").innerHTML="#5.0 microcuff";}
+      else if (valAge<10) {document.getElementById("ETTsize").innerHTML="#5.5 microcuff";}
+      else if (valAge==10) {document.getElementById("ETTsize").innerHTML="#6.0 cuffed";}
+      // calculate ETT depth and predicted BW
+      if (valAge>=1 && valAge<=10) {
+        valbodyweight = document.getElementById("inputBW").value;
+        document.getElementById("EBVfactor").innerHTML="70";
+        document.getElementById("EBV").innerHTML=Math.round(valbodyweight*70);
+        document.getElementById("spacefiller").innerHTML="&rarr; predicted BW is ";
+        document.getElementById("predictedBW").innerHTML=valAge*2+8 + "" + "kg";
+	      if (valAge>=2) {
+          document.getElementById("ETTdepth").innerHTML=valAge/2+12 + " cm";
+        }
+      }
+      document.getElementById("navAge").innerHTML="Age: " + valAge + "y";  
+    }
+  }
+  else if (valAgeUnit==="months") { // THIS SECTION IS FOR AGE-MONTHS
+    var valAge=Math.round(document.getElementById("inputAge").value);
+    document.getElementById("spacefiller").innerHTML="";
+    document.getElementById("predictedBW").innerHTML="";
+    //Add exclusion criteria first
+    if (document.getElementById("inputAge").value.length===0) {
+      resetAge();
+    }
+    else if ((valAge<0) || (valAge>120)) {
+      resetAge(); 
+    }
+    else {   // then calculate ETT size and depth based on AGE, and return navbar AGE prompt
+      if (valAge<=1) { //1 MONTH!!
+        //get body weight
+        valbodyweight = document.getElementById("inputBW").value;
+        document.getElementById("EBVfactor").innerHTML="90";
+        document.getElementById("EBV").innerHTML=Math.round(valbodyweight*90);
+        if ((valbodyweight>0.01)&&(valbodyweight<1)) {
+          if ((valbodyweight>0.01)&&(valbodyweight<0.7)) {
+            document.getElementById("ETTsize").innerHTML="#2.0-2.5 uncuffed" + "<i style='font-size:80%'>" + " for Neonates<0.7kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="Around 6cm";
+          }
+          else if ((valbodyweight>=0.7)&&(valbodyweight<1)) {
+            document.getElementById("ETTsize").innerHTML="#2.5 uncuffed" + "<i style='font-size:80%'>" + " for Neonates<1kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="6-6.5cm";            
+          }
+        }
+        else if ((valbodyweight>=1)&&(valbodyweight<3.5)) {
+          if ((valbodyweight>=1)&&(valbodyweight<2)) {
+            document.getElementById("ETTsize").innerHTML="#3.0 uncuffed" + "<i style='font-size:80%'>" + " for Neonates 1-3.5kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="7cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+          else if ((valbodyweight>=2)&&(valbodyweight<3)) {
+            document.getElementById("ETTsize").innerHTML="#3.0 uncuffed"+ "<i style='font-size:80%'>" + " for Neonates 1-3.5kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="8cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+          else if ((valbodyweight>=3)&&(valbodyweight<3.5)) {
+            document.getElementById("ETTsize").innerHTML="#3.0-3.5 uncuffed, or" + "<br>" + "#3.0 microcuff" + "<i style='font-size:80%'>" + " for term neonates >=3kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="9cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+        }
+        else if ((valbodyweight>=3.5)&&(valbodyweight<=5)) {
+          document.getElementById("ETTsize").innerHTML="#3.5 uncuffed, or" + "<br>" + "#3.0 microcuff"  + "<i style='font-size:80%'>" + " for term>=3kg up to <8mo" + "</i>";
+          document.getElementById("ETTdepth").innerHTML="9-10cm" + "<i style='font-size:80%'>" + " for term neonates" + "</i>";
+        }
+        else if (valbodyweight>5) {
+          document.getElementById("ETTsize").innerHTML="Not a neonate??";
+          document.getElementById("ETTdepth").innerHTML="Not a neonate??";
+        }
+        else {
+          // clear ETT size and depth fields if BW unknown
+          document.getElementById("ETTsize").innerHTML="__";
+          document.getElementById("ETTdepth").innerHTML="__";
+        }
+      }
+      else if (valAge<8) { //8 months!!! microcuff #3.0 for <8mo
+        document.getElementById("spacefiller").innerHTML="&rarr; predicted BW is ";
+        document.getElementById("predictedBW").innerHTML=Math.round(valAge/2*10)/10+4 + "" + "kg";
+        valbodyweight = document.getElementById("inputBW").value;
+        document.getElementById("EBVfactor").innerHTML="80";
+        document.getElementById("EBV").innerHTML=Math.round(valbodyweight*80);
+        document.getElementById("ETTsize").innerHTML="3.5 uncuffed, or" + "<br>" + "3.0 microcuff"  + "<i style='font-size:80%'>" + " for term>=3kg up to <8mo" + "</i>";
+        document.getElementById("ETTdepth").innerHTML="Around 10cm";}
+      else if (valAge<24) { //i.e. 2 years!!!
+        valbodyweight = document.getElementById("inputBW").value;
+        if (valAge<=12) {
+          document.getElementById("spacefiller").innerHTML="&rarr; predicted BW is ";
+          document.getElementById("predictedBW").innerHTML=Math.round(valAge/2*10)/10+4 + "" + "kg";
+          document.getElementById("EBVfactor").innerHTML="80";
+          document.getElementById("EBV").innerHTML=Math.round(valbodyweight*80);
+        } else {
+          document.getElementById("spacefiller").innerHTML="&rarr; predicted BW is ";
+          document.getElementById("predictedBW").innerHTML=Math.round(valAge/12*10)/10*2+8 + "" + "kg";
+          document.getElementById("EBVfactor").innerHTML="70";
+          document.getElementById("EBV").innerHTML=Math.round(valbodyweight*70);
+        }
+        document.getElementById("ETTsize").innerHTML="#3.5 microcuff" + "<i style='font-size:80%'>" + " for 8mo to <2y" + "</i>";
+        document.getElementById("ETTdepth").innerHTML="10-11cm" + "<i style='font-size:80%'>" + " for 1-year-old" + "</i>"
+      }
+      else if (valAge<48) {document.getElementById("ETTsize").innerHTML="#4.0 microcuff";}
+      else if (valAge<72) {document.getElementById("ETTsize").innerHTML="#4.5 microcuff";}
+      else if (valAge<96) {document.getElementById("ETTsize").innerHTML="#5.0 microcuff";}
+      else if (valAge<120) {document.getElementById("ETTsize").innerHTML="#5.5 microcuff";}
+      else if (valAge==120) {document.getElementById("ETTsize").innerHTML="#6.0 cuffed";}
+      // calculate ETT depth and predicted BW
+      if (valAge>=24 && valAge<=120) {
+        document.getElementById("spacefiller").innerHTML="&rarr; predicted BW is ";
+        document.getElementById("predictedBW").innerHTML=Math.round(valAge/12*10)/10*2+8 + "" + "kg";
+        document.getElementById("ETTdepth").innerHTML=Math.round(valAge/12)/2+12 + " cm";
+        valbodyweight = document.getElementById("inputBW").value;
+        document.getElementById("EBVfactor").innerHTML="70";
+        document.getElementById("EBV").innerHTML=Math.round(valbodyweight*70);
+      }
+      document.getElementById("navAge").innerHTML="Age: " + valAge + "mth";  
+    }
+  }
+  else if (valAgeUnit==="days") { //THIS SECTION IS FOR AGE-DAYS
+    var valAge=Math.round(document.getElementById("inputAge").value);
+    document.getElementById("spacefiller").innerHTML="";
+    document.getElementById("predictedBW").innerHTML="";
+    //Add exclusion criteria first
+    if (document.getElementById("inputAge").value.length===0) {
+      resetAge();
+    }
+    else if ((valAge<0) || (valAge>100)) {
+      resetAge(); 
+    }
+    else {   // then calculate ETT size and depth based on AGE, and return navbar AGE prompt
+      if (valAge<=100) { //assume so-called neonate <100days
+        //get body weight
+        valbodyweight = document.getElementById("inputBW").value;
+        if (valAge>31) {
+          document.getElementById("EBVfactor").innerHTML="80";
+          document.getElementById("EBV").innerHTML=Math.round(valbodyweight*80);
+        } else {
+          document.getElementById("EBVfactor").innerHTML="90";
+          document.getElementById("EBV").innerHTML=Math.round(valbodyweight*90);
+        }
+        if ((valbodyweight>0.01)&&(valbodyweight<1)) {
+          if ((valbodyweight>0.01)&&(valbodyweight<0.7)) {
+            document.getElementById("ETTsize").innerHTML="#2.0-2.5 uncuffed" + "<i style='font-size:80%'>" + " for Neonates<0.7kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="Around 6cm";
+          }
+          else if ((valbodyweight>=0.7)&&(valbodyweight<1)) {
+            document.getElementById("ETTsize").innerHTML="#2.5 uncuffed" + "<i style='font-size:80%'>" + " for Neonates<1kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="6-6.5cm";            
+          }
+        }
+        else if ((valbodyweight>=1)&&(valbodyweight<3.5)) {
+          if ((valbodyweight>=1)&&(valbodyweight<2)) {
+            document.getElementById("ETTsize").innerHTML="#3.0 uncuffed" + "<i style='font-size:80%'>" + " for Neonates 1-3.5kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="7cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+          else if ((valbodyweight>=2)&&(valbodyweight<3)) {
+            document.getElementById("ETTsize").innerHTML="#3.0 uncuffed"+ "<i style='font-size:80%'>" + " for Neonates 1-3.5kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="8cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+          else if ((valbodyweight>=3)&&(valbodyweight<3.5)) {
+            document.getElementById("ETTsize").innerHTML="#3.0-3.5 uncuffed, or" + "<br>" + "#3.0 microcuff" + "<i style='font-size:80%'>" + " for term neonates >=3kg" + "</i>";
+            document.getElementById("ETTdepth").innerHTML="9cm" + "<i style='font-size:80%;'>" + " (7-8-9 rule i.e. 6cm plus BW in kg)" + "</i>";}
+        }
+        else if ((valbodyweight>=3.5)&&(valbodyweight<=5)) {
+          document.getElementById("ETTsize").innerHTML="#3.5 uncuffed, or" + "<br>" + "#3.0 microcuff"  + "<i style='font-size:80%'>" + " for term>=3kg up to <8mo" + "</i>";
+          document.getElementById("ETTdepth").innerHTML="9-10cm" + "<i style='font-size:80%'>" + " for term neonates" + "</i>";
+        }
+        else if (valbodyweight>5) {
+          document.getElementById("ETTsize").innerHTML="Not a neonate??";
+          document.getElementById("ETTdepth").innerHTML="Not a neonate??";
+        }
+        else {
+          // clear ETT size and depth fields if BW unknown
+          document.getElementById("ETTsize").innerHTML="__";
+          document.getElementById("ETTdepth").innerHTML="__";
+        }
+      }
+      document.getElementById("navAge").innerHTML="Age: " + valAge + "d" ; 
+    }  
+  }
+}
+function resetAge() {
+  document.getElementById("ETTsize").innerHTML="__";
+  document.getElementById("ETTdepth").innerHTML="__";
+  if (valAgeUnit==="years") {
+    document.getElementById("spacefiller").innerHTML="(enter age range 0-10y)";}
+  else if (valAgeUnit==="months") {
+    document.getElementById("spacefiller").innerHTML="(enter age range 0-120months)";
+  }
+  else if (valAgeUnit==="days") {
+    document.getElementById("spacefiller").innerHTML="(not a neonate?)";
+  }
+  document.getElementById("predictedBW").innerHTML="";
+  document.getElementById("navAge").innerHTML="";
+}
+function dosecalc(valNum) { 
+  if ((valNum.length===0)||(valNum<0)||(valNum>50)) {
+    document.getElementById("spacefiller2").innerHTML="Please enter correct BW";
+    document.getElementById("navBW").innerHTML="";
+    var listfield = document.getElementsByClassName("field");
+    for (i=0; i<listfield.length; i++) {
+      listfield[i].innerHTML="__";
+    }
+  }
+  else {
+    //ADD ageupdate as ETT will be affected by age if baby is small
+    ageupdate();
+    document.getElementById("spacefiller2").innerHTML="";
+    if (valNum<0) {document.getElementById("LMAsize").innerHTML="Please enter correct BW";}
+    else if (valNum<2.5) {document.getElementById("LMAsize").innerHTML="N/A";}
+    else if (valNum<5) {document.getElementById("LMAsize").innerHTML="#1";}
+    else if (valNum<10) {document.getElementById("LMAsize").innerHTML="#1.5";}
+    else if (valNum<20) {document.getElementById("LMAsize").innerHTML="#2";}
+    else if (valNum<30) {document.getElementById("LMAsize").innerHTML="#2.5";}
+    else if (valNum<=50) {document.getElementById("LMAsize").innerHTML="#3"}
+    else {document.getElementById("LMAsize").innerHTML="BW out of range";} 
+    var BWforIVF = Math.round(valNum*10)/10;
+    if (BWforIVF<0) {document.getElementById("IVFrate").innerHTML="Please enter correct BW";}
+    else if (BWforIVF<10) {document.getElementById("IVFrate").innerHTML=Math.round(BWforIVF*4*10)/10;}
+    else if (BWforIVF<20) {var BWforIVFten = BWforIVF-10; document.getElementById("IVFrate").innerHTML=40+BWforIVFten*2;}
+    else if (BWforIVF<=50) {var BWforIVFtwenty = BWforIVF-20; document.getElementById("IVFrate").innerHTML=60+BWforIVFtwenty;}
+    else {document.getElementById("IVFrate").innerHTML="BW out of range";}
+    document.getElementById("IVFbolus").innerHTML=Math.round(valNum*20*10)/10;
+    document.getElementById("propofoldose").innerHTML=Math.round(valNum*3*10)/10;
+    document.getElementById("atracuriumdose").innerHTML=Math.round(valNum*0.5*10)/10;
+    document.getElementById("fentanyldose1").innerHTML=Math.round(valNum*10)/10;
+    document.getElementById("fentanyldose2").innerHTML=Math.round(valNum*2*10)/10;
+    document.getElementById("morphinedose").innerHTML=Math.round(valNum*0.1*10)/10;
+    document.getElementById("IVpanadolBW").innerHTML=(valNum<=10) ? "7.5mg/kg for BW<=10kg":"15mg/kg for BW>10kg";
+    document.getElementById("IVpanadol").innerHTML=(valNum<=10) ? Math.round(valNum*7.5):Math.round(valNum*15);
+    document.getElementById("PRpanadol").innerHTML=(valNum<=33.4) ? Math.round(valNum*30):1000;
+    document.getElementById("morphinedose").innerHTML=Math.round(valNum*0.1*10)/10;
+    document.getElementById("ondansetrondose").innerHTML=(valNum<=40) ? Math.round(valNum*0.1*10)/10:4;
+    document.getElementById("dopamineDOSE").innerHTML=Math.round(valNum*3*10)/10;
+    document.getElementById("dopamineNEAT").innerHTML=Math.round(valNum*3/40*100)/100;
+    document.getElementById("spacefillerdopamine").innerHTML=(valNum<=2.5) ? "<br />" + "&rarr;NEAT drug volume is too small, suggest alternative method of dilution!":""; 
+    document.getElementById("atropinedose").innerHTML=Math.round(valNum*20/1000*100)/100;
+    document.getElementById("suxdose").innerHTML=Math.round(valNum*1.5*10)/10;
+    document.getElementById("adrenalinedose").innerHTML=Math.round(valNum*10);
+    document.getElementById("adrenalineML").innerHTML=Math.round(valNum*0.1*100)/100;
+    document.getElementById("adrenalinedose1mcg").innerHTML=Math.round(valNum);
+    document.getElementById("adrenalineML1mcg").innerHTML=Math.round(valNum*0.01*100)/100; 
+    document.getElementById("ATP").innerHTML=Math.round(valNum*0.05*100)/100;
+    document.getElementById("amiodose").innerHTML=Math.round(valNum*5*10)/10;
+    document.getElementById("cardiover1").innerHTML=Math.round(valNum*0.5);
+    document.getElementById("cardiover2").innerHTML=Math.round(valNum);
+    document.getElementById("cardiover3").innerHTML=Math.round(valNum*2);
+    document.getElementById("defibdose1").innerHTML=Math.round(valNum*2);
+    document.getElementById("defibdose2").innerHTML=Math.round(valNum*4);
+    document.getElementById("dopamineNEAT").innerHTML=Math.round(valNum*3/40*100)/100;
+    document.getElementById("dopamineDILUTENT").innerHTML=Math.floor((50-valNum*3/40)*100)/100;
+    document.getElementById("dobutDOSE").innerHTML=Math.round(valNum*3*10)/10;
+    document.getElementById("dobutNEAT").innerHTML=Math.round(valNum*3/12.5*100)/100;
+    document.getElementById("dobutDILUTENT").innerHTML=Math.floor((50-valNum*3/12.5)*100)/100;
+    //correction for large BW>10kg for norad; ADRENALINE, not to exceed 64ug/ml max conc
+    if (valNum>10) {
+      document.getElementById("noradDOSE").innerHTML="3mg" + "<span style='font-size:75%;'>" + " (adult standard dilution)" + "</span>";
+      document.getElementById("noradNEAT").innerHTML="3";
+      document.getElementById("noradDILUTENT").innerHTML="47";
+      document.getElementById("noradInfuseAt").innerHTML="Titrate to effect";
+      document.getElementById("adrenDOSE").innerHTML="3mg" + "<span style='font-size:75%;'>" + " (adult standard dilution)" +"</span>";
+      document.getElementById("adrenNEAT").innerHTML="30";
+      document.getElementById("adrenDILUTENT").innerHTML="20";
+      document.getElementById("adrenInfuseAt").innerHTML="Titrate to effect";
+    } else {
+      document.getElementById("noradDOSE").innerHTML=Math.round(valNum*0.3*100)/100 + "mg" + "<span style='font-size:80%;'>" + " [BW(kg)x0.3] " + "</span>";
+      document.getElementById("noradNEAT").innerHTML=Math.round(valNum*0.3*100)/100;
+      document.getElementById("noradDILUTENT").innerHTML=Math.floor((50-valNum*0.3)*100)/100;
+      document.getElementById("noradInfuseAt").innerHTML="0.1-0.5 mcg/kg/min = 1-5 ml/h";
+      document.getElementById("adrenDOSE").innerHTML=Math.round(valNum*0.3*100)/100 + "mg" + "<span style='font-size:80%;'>" + " [BW(kg)x0.3] " + "</span>";
+      document.getElementById("adrenNEAT").innerHTML=Math.round(valNum*0.3/0.1*100)/100;
+      document.getElementById("adrenDILUTENT").innerHTML=Math.floor((50-valNum*0.3/0.1)*100)/100;
+      document.getElementById("adrenInfuseAt").innerHTML="0.1-2 mcg/kg/min = 1-20 ml/h";
+    }
+    document.getElementById("cagluconate").innerHTML=Math.round(valNum*0.3*10)/10;
+    document.getElementById("D10W").innerHTML=Math.round(valNum*2*10)/10;
+    document.getElementById("DIdripInsulin").innerHTML=Math.round(valNum*0.1*10)/10;
+    document.getElementById("DIdripDextrose").innerHTML=Math.round(valNum*2*10)/10;
+    document.getElementById("DIspacefiller").innerHTML=(valNum<=25) ? "":"<br>" + "<i style='font-size:80%'>" + " (consider reducing glucose load according to clinical situation)";
+    document.getElementById("sodiumbicarb").innerHTML=Math.round(valNum);
+    document.getElementById("hydrocortisone1").innerHTML=Math.round(valNum*2*10)/10;
+    document.getElementById("hydrocortisone2").innerHTML=Math.round(valNum*4*10)/10;
+    document.getElementById("naloxone").innerHTML=Math.round(valNum*4*10)/10;
+      document.getElementById("flumazenil").innerHTML=(valNum<=20) ? Math.round(valNum*10) + "mcg slow IV":Math.round(valNum*10) + "mcg slow IV" + "<br><span style='font-size:80%'>" + "adult dose: 200mcg initially, repeat up to max 1g" + "</span>";
+    document.getElementById("mannitol1").innerHTML=Math.round(valNum*1.25*10)/10;
+    document.getElementById("mannitol2").innerHTML=Math.round(valNum*2.5*10)/10;
+    document.getElementById("lorazepam").innerHTML=(valNum<=40) ? Math.round(valNum*0.1*10)/10:4;
+    document.getElementById("phenytoin").innerHTML=Math.round(valNum*20*10)/10;
+    document.getElementById("PRBC4").innerHTML=Math.round(valNum*4);
+    document.getElementById("PRBC10").innerHTML=Math.round(valNum*10);
+    document.getElementById("platelets").innerHTML=Math.round(valNum*10);
+    document.getElementById("FFP").innerHTML=Math.round(valNum*15);
+    document.getElementById("phenylephrine1").innerHTML=Math.round(valNum);
+    document.getElementById("phenylephrine2").innerHTML=Math.round(valNum*2);
+    document.getElementById("magnesium1").innerHTML=Math.round(valNum*25);
+    document.getElementById("magnesium2").innerHTML=(valNum<=40) ? Math.round(valNum*50):2000;
+    document.getElementById("magnesiumml1").innerHTML=Math.round(valNum*0.05*10)/10;
+    document.getElementById("magnesiumml2").innerHTML=Math.round(valNum*0.1*10)/10;
+    document.getElementById("intralipid").innerHTML=Math.round(valNum*1.5*10)/10;
+    document.getElementById("dantrolene").innerHTML=Math.round(valNum*2.5*10)/10;
+    document.getElementById("midazolam1").innerHTML=Math.round(valNum*0.1*10)/10;
+    document.getElementById("midazolam2").innerHTML=Math.round(valNum*0.2*10)/10;
+    document.getElementById("neostigminedose").innerHTML=Math.round(valNum*0.05*100)/100;
+    document.getElementById("lignocainewithadrenaline").innerHTML=Math.round(valNum*7*10)/10;
+    document.getElementById("lignocainewithoutadrenaline").innerHTML=Math.round(valNum*4*10)/10;
+    document.getElementById("bupivacainedose").innerHTML=Math.round(valNum*2*10)/10;
+    document.getElementById("navBW").innerHTML="BW: "+ Math.round(valNum*10)/10 + "kg";
+  }
+}
+function calcWFH(varHeight) {
+  if (varHeight>0) {
+  var arrayWFH = [
+    [55, 4.55, 4.54],
+    [57, 5.07, 4.88],
+    [59, 5.58, 5.27],
+    [61, 6.08, 5.69],
+    [63, 6.58, 6.14],
+    [65, 7.07, 6.62],
+    [67, 7.55, 7.11],
+    [69, 8.02, 7.61],
+    [71, 8.49, 8.12],
+    [73, 8.95, 8.63],
+    [75, 9.4, 9.13],
+    [77, 9.84, 9.63],
+    [79, 10.29, 10.13],
+    [81, 10.73, 10.61],
+    [83, 11.16, 11.09],
+    [85, 11.6, 11.55],
+    [87, 12.04, 12.01],
+    [89, 12.48, 12.46],
+    [91, 12.93, 12.91],
+    [93, 13.39, 13.35],
+    [95, 13.86, 13.79],
+    [97, 14.34, 14.24],
+    [99, 14.83, 14.69],
+    [101, 15.35, 15.16],
+    [103, 15.88, 15.64],
+    [105, 16.44, 16.13],
+    [107, 17.03, 16.66],
+    [109, 17.64, 17.21],
+    [111, 18.28, 17.79],
+    [113, 18.96, 18.42],
+    [115, 19.67, 19.08],
+    [117, 20.43, 19.79],
+    [119, 21.22, 20.56],
+    [121, 22.06, 21.38],
+    [123, 22.94, 22.26],
+    [125, 23.86, 23.21],
+    [127, 24.84, 24.22],
+    [129, 25.86, 25.3],
+    [131, 26.94, 26.45],
+    [133, 28.06, 27.67],
+    [135, 29.24, 28.97],
+    [137, 30.47, 30.33],
+    [139, 31.75, 31.76],
+    [141, 33.08, 33.26],
+    [143, 34.45, 34.83],
+    [145, 35.88, 36.45],
+    [147, 37.35, 38.11],
+    [149, 38.86, 39.83],
+    [151, 40.4, 41.57],
+    [153, 41.98, 43.34],
+    [155, 43.59, 45.11],
+    [157, 45.23, 46.87],
+    [159, 46.87, 48.61]
+  ];
+  for (i=0; i<46; i++) {
+    if (arrayWFH[i][0]==varHeight) break;
+  }
+  if (GCGender.value==0) {
+    document.getElementById("GCBWinput").value = arrayWFH[i][1];
+  }
+  else {
+    document.getElementById("GCBWinput").value = arrayWFH[i][2];
+  }
+  }
+}
+function calcWFA(varAgeinput) {
+  if (varAgeinput>0) {
+  var arrayWFA = [
+    [0.25, 3.43, 3.37],
+    [1, 4.39, 4.16],
+    [2, 5.42, 5.03],
+    [3, 6.18, 5.68],
+    [4, 6.81, 6.24],
+    [5, 7.39, 6.77],
+    [6, 7.82, 7.17],
+    [8, 8.51, 7.86],
+    [10, 8.99, 8.37],
+    [12, 9.41, 8.82],
+    [15, 9.98, 9.42],
+    [18, 10.59, 10.01],
+    [21, 11.26, 10.63],
+    [24, 12, 11.2],
+    [30, 13, 12],
+    [36, 13.9, 12.8],
+    [42, 14.8, 13.6],
+    [48, 15.6, 14.5],
+    [54, 16.5, 15.5],
+    [60, 17.3, 16.5],
+    [66, 18.2, 17.6],
+    [72, 19.2, 18.7],
+    [78, 20.3, 20],
+    [84, 21.4, 21.3],
+    [90, 22.7, 22.7],
+    [96, 24, 24.2],
+    [102, 25.5, 25.7],
+    [108, 27, 27.3],
+    [114, 28.7, 28.9],
+    [120, 30.5, 30.6]
+  ];
+  for (i=0; i<30; i++) {
+    if (arrayWFA[i][0]==varAgeinput) break;
+  }
+  if (GCGender.value==0) {
+    document.getElementById("GCBWinput").value = arrayWFA[i][1]
+  }
+  else {
+    document.getElementById("GCBWinput").value = arrayWFA[i][2]
+  }
+  }
+}
+function sendtoOpener() {
+  document.getElementById("inputBW").value = document.getElementById("GCBWinput").value;
+  dosecalc(document.getElementById("inputBW").value); 
+  ageupdate();
+  document.getElementById("spacefiller2").innerHTML = "estimated from growth chart";
+  hidemodal("modalGC");
+}
+</script>
+  </body>
+</html>
